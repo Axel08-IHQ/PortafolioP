@@ -1,0 +1,121 @@
+---
+---
+<button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema">
+  <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="5"></circle>
+    <line x1="12" y1="1" x2="12" y2="3"></line>
+    <line x1="12" y1="21" x2="12" y2="23"></line>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+    <line x1="1" y1="12" x2="3" y2="12"></line>
+    <line x1="21" y1="12" x2="23" y2="12"></line>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+  </svg>
+  <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+  </svg>
+</button>
+
+<style>
+  .theme-toggle {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 1001;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-md);
+  }
+
+  .theme-toggle:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-primary);
+  }
+
+  .sun-icon, .moon-icon {
+    position: absolute;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  :global([data-theme="dark"]) .sun-icon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+
+  :global([data-theme="dark"]) .moon-icon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+  }
+
+  :global([data-theme="light"]) .sun-icon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+  }
+
+  :global([data-theme="light"]) .moon-icon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+
+  .sun-icon {
+    color: #fbbf24;
+  }
+
+  .moon-icon {
+    color: #6366f1;
+  }
+</style>
+
+<script>
+  function setupTheme() {
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+        return localStorage.getItem('theme');
+      }
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+      return 'light';
+    })();
+  
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    window.localStorage.setItem('theme', theme || 'light');
+  }
+
+  function handleToggle() {
+    const element = document.documentElement;
+    const isDark = element.getAttribute('data-theme') === 'dark';
+    const nextTheme = isDark ? 'light' : 'dark';
+    element.setAttribute('data-theme', nextTheme);
+    localStorage.setItem('theme', nextTheme);
+  }
+
+  // Initialize on first load
+  setupTheme();
+
+  // Handle toggle click
+  document.getElementById('theme-toggle')?.addEventListener('click', handleToggle);
+
+  // Re-initialize after Astro page swap
+  document.addEventListener('astro:after-swap', () => {
+    setupTheme();
+    document.getElementById('theme-toggle')?.addEventListener('click', handleToggle);
+  });
+</script>

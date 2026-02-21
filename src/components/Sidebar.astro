@@ -2,120 +2,216 @@
 const { selectedItem } = Astro.props;
 ---
 
-<aside
-  data-animation="default"
-  data-collapse="medium"
-  data-duration="400"
-  data-easing="ease"
-  data-easing2="ease"
-  role="banner"
-  class="sidebar w-nav"
->
+<aside class="sidebar">
   <div class="nav-content">
-    <a href="/" class="w-nav-brand" aria-label="home">
+    <a href="/" class="profile-link" aria-label="Inicio">
       <div class="niv-data">
         <img
           src="/assets/sam.jpg"
           loading="eager"
-          alt="Profile picture"
+          alt="Foto de perfil"
           class="niv-image"
         />
         <div>
-          <div class="label-white">Sam Bernstein</div>
-          <div class="label-gray">Software Engineer</div>
+          <div class="label-white">Axel Huera</div>
+          <div class="label-gray">Ingeniero en Software</div>
         </div>
       </div>
     </a>
 
-    <nav role="navigation" class="w-nav-menu">
+    <nav class="sidebar-nav">
       <a
         href="/"
-        class={`nav-link-container w-inline-block ${
-          selectedItem === 'home' ? 'w--current' : ''
-        }`}
+        class={`nav-link ${selectedItem === 'home' ? 'active' : ''}`}
       >
-        <img
-          src="/assets/home.svg"
-          loading="eager"
-          alt=""
-          class="nav-link-image"
-        />
-        <div>Home</div>
+        <img src="/assets/home.svg" alt="" class="nav-link-icon" />
+        <span>Inicio</span>
       </a>
       <a
         href="/software-development"
-        class={`nav-link-container w-inline-block ${
-          selectedItem === 'software-development' ? 'w--current' : ''
-        }`}
-        aria-current={
-          selectedItem === 'software-development' ? 'page' : undefined
-        }
+        class={`nav-link ${selectedItem === 'software-development' ? 'active' : ''}`}
       >
-        <img
-          src="/assets/code.svg"
-          loading="eager"
-          alt=""
-          class="nav-link-image"
-        />
-        <div>Software development</div>
-      </a>
-      <a
-        href="/devops"
-        class={`nav-link-container w-inline-block ${
-          selectedItem === 'devops' ? 'w--current' : ''
-        }`}
-      >
-        <img
-          src="/assets/dns.svg"
-          loading="eager"
-          alt=""
-          class="nav-link-image"
-        />
-        <div>DevOps</div>
+        <img src="/assets/code.svg" alt="" class="nav-link-icon" />
+        <span>Desarrollo</span>
       </a>
       <a
         href="/personal-projects"
-        class={`nav-link-container w-inline-block ${
-          selectedItem === 'personal-projects' ? 'w--current' : ''
-        }`}
+        class={`nav-link ${selectedItem === 'personal-projects' ? 'active' : ''}`}
       >
-        <img
-          src="/assets/favorite.svg"
-          loading="eager"
-          alt=""
-          class="nav-link-image"
-        />
-        <div>Personal projects</div>
+        <img src="/assets/favorite.svg" alt="" class="nav-link-icon" />
+        <span>Proyectos</span>
+      </a>
+      <a
+        href="/devops"
+        class={`nav-link ${selectedItem === 'devops' ? 'active' : ''}`}
+      >
+        <img src="/assets/dns.svg" alt="" class="nav-link-icon" />
+        <span>DevOps</span>
       </a>
     </nav>
-
-    <div
-      class="navbar-icon-button w-nav-button"
-      style="-webkit-user-select: text;"
-      aria-label="menu"
-      role="button"
-      tabindex="0"
-    >
-      <img
-        src="/assets/menu.svg"
-        loading="eager"
-        alt=""
-        class="navbar-icon"
-      />
-    </div>
   </div>
-
-  <script>
-    import { setupNav } from '../scripts/nav.js';
-    
-    let cleanup;
-    document.addEventListener('astro:page-load', () => {
-      if (cleanup) cleanup();
-      cleanup = setupNav();
-    });
-
-    document.addEventListener('astro:before-swap', () => {
-      if (cleanup) cleanup();
-    });
-  </script>
 </aside>
+
+<style>
+  .sidebar {
+    width: 280px;
+    min-height: 100vh;
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border-right: 1px solid var(--glass-border);
+    background: var(--color-sidebar-bg);
+    z-index: 100;
+  }
+
+  [data-theme="light"] .sidebar {
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.05);
+  }
+
+  [data-theme="dark"] .sidebar {
+    background: rgba(15, 23, 42, 0.8);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .profile-link {
+    text-decoration: none;
+    display: block;
+    margin-bottom: 48px;
+    transition: transform 0.3s ease;
+  }
+
+  .profile-link:hover {
+    transform: translateX(4px);
+  }
+
+  .niv-data {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .niv-image {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .label-white {
+    color: #ffffff;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+
+  .label-gray {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    border: 1px solid transparent;
+  }
+
+  .nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    transform: translateX(4px);
+  }
+
+  .nav-link.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .nav-link-icon {
+    width: 22px;
+    height: 22px;
+    transition: transform 0.3s ease;
+  }
+
+  .nav-link:hover .nav-link-icon {
+    transform: scale(1.1);
+  }
+
+  @media (max-width: 991px) {
+    .sidebar {
+      width: 100%;
+      min-height: auto;
+      padding: 12px 20px;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      border-right: none;
+      border-bottom: 1px solid var(--glass-border);
+      position: sticky;
+      top: 0;
+    }
+
+    .profile-link {
+      margin-bottom: 0;
+    }
+
+    .niv-data {
+      gap: 12px;
+    }
+
+    .niv-image {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+    }
+
+    .label-white {
+      font-size: 15px;
+    }
+
+    .label-gray {
+      display: none;
+    }
+
+    .sidebar-nav {
+      flex-direction: row;
+      gap: 4px;
+    }
+
+    .nav-link {
+      padding: 8px;
+      border-radius: 10px;
+    }
+
+    .nav-link span {
+      display: none;
+    }
+
+    .nav-link-icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+</style>
