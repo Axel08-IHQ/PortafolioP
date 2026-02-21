@@ -1,13 +1,14 @@
 ---
+const baseUrl = import.meta.env.BASE_URL;
 const { selectedItem } = Astro.props;
 ---
 
 <aside class="sidebar">
   <div class="nav-content">
-    <a href="/" class="profile-link" aria-label="Inicio">
+    <a href={baseUrl} class="profile-link" aria-label="Inicio">
       <div class="niv-data">
         <img
-          src="/assets/sam.jpg"
+          src={`${baseUrl}assets/sam.jpg`}
           loading="eager"
           alt="Foto de perfil"
           class="niv-image"
@@ -21,31 +22,31 @@ const { selectedItem } = Astro.props;
 
     <nav class="sidebar-nav">
       <a
-        href="/"
+        href={baseUrl}
         class={`nav-link ${selectedItem === 'home' ? 'active' : ''}`}
       >
-        <img src="/assets/home.svg" alt="" class="nav-link-icon" />
+        <img src={`${baseUrl}assets/home.svg`} alt="" class="nav-link-icon" />
         <span>Inicio</span>
       </a>
       <a
-        href="/software-development"
+        href={`${baseUrl}software-development`}
         class={`nav-link ${selectedItem === 'software-development' ? 'active' : ''}`}
       >
-        <img src="/assets/code.svg" alt="" class="nav-link-icon" />
+        <img src={`${baseUrl}assets/code.svg`} alt="" class="nav-link-icon" />
         <span>Desarrollo</span>
       </a>
       <a
-        href="/personal-projects"
+        href={`${baseUrl}personal-projects`}
         class={`nav-link ${selectedItem === 'personal-projects' ? 'active' : ''}`}
       >
-        <img src="/assets/favorite.svg" alt="" class="nav-link-icon" />
+        <img src={`${baseUrl}assets/favorite.svg`} alt="" class="nav-link-icon" />
         <span>Proyectos</span>
       </a>
       <a
-        href="/devops"
+        href={`${baseUrl}devops`}
         class={`nav-link ${selectedItem === 'devops' ? 'active' : ''}`}
       >
-        <img src="/assets/dns.svg" alt="" class="nav-link-icon" />
+        <img src={`${baseUrl}assets/dns.svg`} alt="" class="nav-link-icon" />
         <span>DevOps</span>
       </a>
     </nav>

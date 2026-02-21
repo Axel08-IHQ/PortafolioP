@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Project from "../components/Project.astro";
 import Sidebar from "../components/Sidebar.astro";
+const baseUrl = import.meta.env.BASE_URL;
 const projects = [
   {
     title: "Proyectos DevOps",
@@ -20,8 +21,8 @@ const projects = [
     <main class="main">
       <div class="container">
         <div class="back-nav-container">
-          <a href="/" class="back-nav-button">
-            <img src="/assets/back.svg" loading="lazy" alt="Volver" class="back-nav-img" />
+          <a href={baseUrl} class="back-nav-button">
+            <img src={`${baseUrl}assets/back.svg`} loading="lazy" alt="Volver" class="back-nav-img" />
             <span>Volver</span>
           </a>
         </div>

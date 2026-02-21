@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Sidebar from "../components/Sidebar.astro";
+
+const baseUrl = import.meta.env.BASE_URL;
 ---
 
 <Layout title="Axel Huera - Ingeniero en Software" description="Portfolio de Axel Huera, Ingeniero en Software especializado en desarrollo web y DevOps">
@@ -18,17 +20,17 @@ import Sidebar from "../components/Sidebar.astro";
           </div>
           <div class="hero-actions">
             <a href="mailto:axelhuera168@gmail.com" class="button button-primary">Contáctame</a>
-            <a href="/personal-projects" class="button button-outline">Ver Proyectos</a>
+            <a href={`${baseUrl}personal-projects`} class="button button-outline">Ver Proyectos</a>
           </div>
         </div>
 
         <div class="projects-section">
           <h2 class="section-title">Especialidades</h2>
           <div class="projects-grid">
-            <a href="/software-development" class="projects-container">
+            <a href={`${baseUrl}software-development`} class="projects-container">
               <div class="single-projects-category">
                 <div class="projects-category-image-container">
-                  <img src="./assets/browser.svg" loading="lazy" alt="Frontend" class="projects-category-image" />
+                  <img src={`${baseUrl}assets/browser.svg`} loading="lazy" alt="Frontend" class="projects-category-image" />
                 </div>
               </div>
               <div class="single-projects-content">
@@ -44,10 +46,10 @@ import Sidebar from "../components/Sidebar.astro";
               </div>
             </a>
             
-            <a href="/personal-projects" class="projects-container">
+            <a href={`${baseUrl}personal-projects`} class="projects-container">
               <div class="single-projects-category">
                 <div class="projects-category-image-container">
-                  <img src="./assets/database.svg" loading="lazy" alt="Backend" class="projects-category-image" />
+                  <img src={`${baseUrl}assets/database.svg`} loading="lazy" alt="Backend" class="projects-category-image" />
                 </div>
               </div>
               <div class="single-projects-content">
@@ -63,10 +65,10 @@ import Sidebar from "../components/Sidebar.astro";
               </div>
             </a>
 
-            <a href="/devops" class="projects-container">
+            <a href={`${baseUrl}devops`} class="projects-container">
               <div class="single-projects-category">
                 <div class="projects-category-image-container">
-                  <img src="./assets/code.svg" loading="lazy" alt="DevOps" class="projects-category-image" />
+                  <img src={`${baseUrl}assets/code.svg`} loading="lazy" alt="DevOps" class="projects-category-image" />
                 </div>
               </div>
               <div class="single-projects-content">

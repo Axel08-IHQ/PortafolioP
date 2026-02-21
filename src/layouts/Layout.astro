@@ -7,6 +7,7 @@ interface Props {
 }
 
 const { title, description = "Portfolio de Axel Huera - Ingeniero en Software" } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL;
 ---
 
 <!doctype html>
@@ -15,7 +16,7 @@ const { title, description = "Portfolio de Axel Huera - Ingeniero en Software" }
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/png" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" href={`${baseUrl}favicon-32x32.png`} />
 		<meta name="generator" content={Astro.generator} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
@@ -26,7 +27,7 @@ const { title, description = "Portfolio de Axel Huera - Ingeniero en Software" }
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 		<title>{title}</title>
-		<link rel="stylesheet" href="/assets/styles.css" />
+		<link rel="stylesheet" href={`${baseUrl}assets/styles.css`} />
 		<ViewTransitions />
 	</head>
 	<body>

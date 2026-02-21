@@ -1,26 +1,26 @@
-# AGENTS.md - Guía del Desarrollador para Codefolio
+# AGENTS.md - Developer Guide for Codefolio
 
-## Descripción General del Proyecto
-Sitio web de portafolio desarrollado con **Astro 5.x** y **TypeScript**. Sitio estático para mostrar proyectos, habilidades e historia personal. Utiliza ViewTransitions para navegación fluida entre páginas.
+## Project Overview
+Astro 5.x + TypeScript static portfolio site with ViewTransitions for smooth SPA-like navigation.
 
-## Comandos de Compilación, Lint y Pruebas
+## Build, Lint & Test Commands
 
-### Scripts de npm
-| Comando | Descripción |
+### npm Scripts
+| Command | Description |
 |---------|-------------|
-| `npm run dev` | Servidor de desarrollo en http://localhost:4321 |
-| `npm run build` | Compilar para producción |
-| `npm run preview` | Previsualizar compilación de producción |
-| `npx astro check` | Verificación de tipos del proyecto |
-| `npx astro sync` | Generar tipos de Astro |
+| `npm run dev` | Dev server at http://localhost:4321 |
+| `npm run build` | Production build |
+| `npm run preview` | Preview production build |
+| `npx astro check` | Type checking |
+| `npx astro sync` | Generate Astro types |
 
-### Ejecución de Pruebas
-No hay un framework de pruebas configurado. Para añadir pruebas:
+### Testing
+No test framework configured. To add tests:
 ```bash
 npm install -D vitest
 ```
 
-Configurar en `package.json`:
+Add to `package.json`:
 ```json
 "scripts": {
   "test": "vitest",
@@ -28,34 +28,31 @@ Configurar en `package.json`:
 }
 ```
 
-Ejecutar pruebas:
+Run tests:
 ```bash
-npm run test              # Modo watch
-npm run test:run          # Ejecución única
-npm run test -- --run src/components/Project.test.js  # Prueba específica
+npm run test              # Watch mode
+npm run test:run         # Single run
+npm run test -- --run src/components/Project.test.js  # Specific file
 ```
 
 ### Linting
-No hay linting configurado. Recomendado:
+No linting configured. Recommended:
 ```bash
-npm install -D eslint @astrojs/eslint-plugin prettier
+npm install -D eslint @astrojs/eslint-plugin
 ```
 
-## Guías de Estilo de Código
+## Code Style Guidelines
 
-### Estructura de Archivos
+### File Structure
 ```
 src/
-├── components/   # Componentes .astro reutilizables
-├── layouts/      # Layouts de página .astro
-├── pages/        # Rutas .astro (archivos .astro en raíz = rutas)
-├── env.d.ts     # Declaraciones de TypeScript
-└── styles/      # Archivos CSS globales (si aplica)
+├── components/   # Reusable .astro components
+├── layouts/      # Page layouts
+├── pages/        # Route .astro files
+└── env.d.ts      # TypeScript declarations
 ```
 
-### Componentes Astro
-**Frontmatter**: Imports primero, luego interfaz Props, después desestructurar `Astro.props`
-
+### Astro Component Pattern
 ```astro
 ---
 import { ViewTransitions } from 'astro:transitions';
@@ -63,66 +60,94 @@ interface Props {
   title: string;
   description?: string;
 }
-const { title, description = "Por defecto" } = Astro.props;
+const { title, description = "default" } = Astro.props;
 ---
 <Layout title={title}>
   <main>{title}</main>
 </Layout>
 ```
 
-**Template**: 
-- Sangría de 2 espacios
-- HTML semántico (`<header>`, `<main>`, `<nav>`, `<aside>`, `<article>`)
-- Siempre incluir `alt` en imágenes
-
-**Styles**: 
-- Scoped por defecto en componentes
-- Usar propiedades personalizadas CSS (`--color-*`, `--radius-*`, `--shadow-*`)
-- Preferir CSS sobre preprocesadores
-
-**Scripts**: Usar `addEventListener`, devolver funciones de limpieza
-
-### Props en Componentes
-Dos formas de tipar (ambas válidas):
-
-1. **Con casting** (usado en Header.astro):
+### Props Typing
+Two valid approaches:
 ```astro
+<!-- Casting (used in Header.astro) -->
 interface HeaderProps { title: string; }
 const { title } = Astro.props as HeaderProps;
-```
 
-2. **Con desestructuración tipada** (recomendado):
-```astro
+<!-- Typed destructuring (recommended) -->
 interface Props { title: string; description?: string; }
 const { title, description = "default" } = Astro.props;
 ```
 
-### TypeScript
-- Tipar siempre parámetros y valores de retorno
-- Usar `interface` para objetos, `type` para uniones/primitivos
-- Ejecutar `npx astro check` antes de commit
-- Extiende `astro/tsconfigs/base` en tsconfig.json
+### TypeScript Guidelines
+- Always type parameters and return values
+- Use `interface` for objects, `type` for unions/primitives
+- Extend `astro/tsconfigs/base` in tsconfig.json
+- Run `npx astro check` before committing
 
-### Convenciones de Nomenclatura
-| Elemento | Convención | Ejemplo |
+### Naming Conventions
+| Element | Convention | Example |
 |---------|------------|---------|
-| Componentes | PascalCase | `Header.astro` |
+| Components | PascalCase | `Header.astro` |
 | Props interfaces | PascalCase + Props | `HeaderProps` |
-| Funciones/variables | camelCase | `setupNav()` |
-| Clases CSS | kebab-case | `.navbar-button` |
-| Archivos | kebab-case | `nav.js` |
-| Constantes | UPPER_SNAKE | `MAX_ITEMS` |
+| Functions/variables | camelCase | `setupNav()` |
+| CSS classes | kebab-case | `.navbar-button` |
+| Files | kebab-case | `nav.js` |
+| Constants | UPPER_SNAKE | `MAX_ITEMS` |
 
-### Orden de Importación
-1. Integrados de Astro (`astro:transitions`, `astro:assets`)
-2. Librerías externas
-3. Componentes internos
-4. Importaciones de tipos (`import type`)
-5. Importaciones de archivos relativos
+### Import Order
+1. Astro built-ins (`astro:transitions`, `astro:assets`)
+2. External libraries
+3. Internal components
+4. Type imports (`import type`)
+5. Relative file imports
 
-### ViewTransitions
-El proyecto usa `ViewTransitions` de `astro:transitions` para navegación SPA-like:
+### CSS/Styling
+- Scoped styles by default
+- Use CSS custom properties (`--color-*`, `--radius-*`, `--shadow-*`)
+- Prefer CSS over preprocessors
 
+### Theme System
+Uses CSS custom properties with data-theme selector:
+```css
+[data-theme="light"] { /* light styles */ }
+[data-theme="dark"] { /* dark styles */ }
+```
+
+Common variables: `--color-*`, `--radius-*`, `--shadow-*`, `--glass-*`
+
+### Images
+- `loading="lazy"` for below-fold images
+- `loading="eager"` for hero/above-fold
+- Always include descriptive `alt`
+
+### Error Handling
+- Use optional chaining (`?.`) and nullish coalescing (`??`)
+- Verify DOM existence before manipulation:
+```javascript
+const el = document.querySelector('.element');
+if (!el) return;
+```
+- Use try-catch for async operations
+
+### Accessibility
+- Always include `alt` on images
+- Use semantic HTML elements
+- Include meta tags for social sharing
+- Use `aria-label` on icon-only links
+
+### Performance
+- Minimize client-side JS
+- Use Astro's `<Image />` component when possible
+- Prefer static generation over client-side rendering
+- Lazy load images by default, eager only for hero
+
+### Responsive Breakpoints
+- Desktop: > 991px
+- Mobile/Tablet: ≤ 991px
+
+## ViewTransitions
+The project uses `ViewTransitions` from `astro:transitions`:
 ```astro
 ---
 import { ViewTransitions } from 'astro:transitions';
@@ -132,96 +157,42 @@ import { ViewTransitions } from 'astro:transitions';
 </head>
 ```
 
-- Permite transiciones animadas entre páginas
-- Mantiene estado del cliente durante navegación
-- No requiere JavaScript adicional del cliente
-
-### Sistema de Temas
-El proyecto implementa tema claro/oscuro con CSS custom properties y selectores:
-
-```css
-[data-theme="light"] { /* estilos tema claro */ }
-[data-theme="dark"] { /* estilos tema oscuro */ }
+Use `transition:name` for animated transitions between pages:
+```astro
+<div transition:name="project-title">...</div>
 ```
 
-Variables CSS comunes:
-- `--color-*`: colores (primary, text, background, card-bg, etc.)
-- `--radius-*`: radios de borde
-- `--shadow-*`: sombras
-- `--glass-*`: efectos de cristal (blur, border)
+## Common Tasks
 
-### Imágenes
-- `loading="lazy"` para imágenes fuera de viewport
-- `loading="eager"` para imágenes above-the-fold (hero)
-- Siempre incluir `alt` descriptivo
-
-### Responsive Design
-Breakpoints típicos en el proyecto:
-- Desktop: > 991px
-- Móvil/Tablet: ≤ 991px
-
-### Manejo de Errores
-- Usar encadenamiento opcional (`?.`) y coalescencia nula (`??`)
-- Verificar existencia en DOM antes de manipular:
-```javascript
-const el = document.querySelector('.element');
-if (!el) return;
-```
-- try-catch para operaciones asíncronas
-
-### Accesibilidad
-- Incluir siempre `alt` en imágenes
-- Usar elementos HTML semánticos
-- Incluir etiquetas meta para compartir en redes sociales
-- Usar `aria-label` en enlaces sin texto
-
-### Rendimiento
-- Minimizar JS del lado del cliente
-- Usar componente `<Image />` de Astro cuando sea posible
-- Preferir generación estática sobre renderizado del lado del cliente
-- Imágenes: lazy loading por defecto, eager solo para hero
-
-## Archivos de Configuración
-| Archivo | Propósito |
-|---------|-----------|
-| `astro.config.mjs` | Configuración de Astro |
-| `tsconfig.json` | Configuración de TypeScript |
-| `package.json` | Dependencias y scripts |
-
-## Tareas Comunes
-
-### Nueva Página
-1. Crear `src/pages/nombre-pagina.astro`
-2. Importar Layout existente
-3. Usar Sidebar con `selectedItem` correcto
-
+### New Page
 ```astro
 ---
 import Layout from '../layouts/Layout.astro';
 import Sidebar from '../components/Sidebar.astro';
 ---
-<Layout title="Título">
+<Layout title="Title">
   <div class="content">
-    <Sidebar selectedItem="nombre-item" />
+    <Sidebar selectedItem="item-name" />
     <main>...</main>
   </div>
 </Layout>
 ```
 
-### Nuevo Componente
-1. Crear `src/components/ComponentName.astro`
-2. Definir interfaz de Props
-3. Implementar con frontmatter, plantilla, estilos
+### New Component
+1. Create `src/components/ComponentName.astro`
+2. Define Props interface
+3. Implement with frontmatter, template, and styles
 
-### Añadir Transiciones a Componentes
-Usar `transition:name` para animaciones entre páginas:
-```astro
-<div transition:name="project-title">...</div>
-```
+## Config Files
+| File | Purpose |
+|------|---------|
+| `astro.config.mjs` | Astro configuration |
+| `tsconfig.json` | TypeScript config |
+| `package.json` | Dependencies and scripts |
 
-## Flujo de Trabajo de Desarrollo
+## Development Workflow
 1. `git checkout -b feature/my-feature`
-2. Probar con `npm run dev`
-3. Verificar compilación: `npm run build`
-4. Verificar tipos: `npx astro check`
-5. Commit con formato convencional: `type(scope): descripción`
+2. Test with `npm run dev`
+3. Verify build: `npm run build`
+4. Check types: `npx astro check`
+5. Commit with conventional format: `type(scope): description`
